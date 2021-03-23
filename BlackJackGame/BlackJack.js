@@ -1,6 +1,9 @@
 
 //import Card from './Card.js';
 
+/**
+ deals two cards to a player
+ */
 function deal() {
     var deck = new Deck();
     
@@ -48,6 +51,10 @@ class Deck {
         
         return hand;
     }
+    
+    /**
+     initializes a deck of 52 cards
+     */
     init() {
         this.cards = new Array(52);
         var i = 0;
