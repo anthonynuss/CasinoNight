@@ -5,23 +5,51 @@
  deals two cards to a player
  */
 function deal() {
+    //create new deck
     var deck = new Deck();
     
-    document.write(deck.select().rank +" of " +deck.select().suit);
-    document.write(deck.select().rank +" of " +deck.select().suit);
+    //select two cards from deck
+    var card1 = deck.select();
+    var card2 = deck.select();
+    
+    //display the cards
+    card1.cardToImage();
+    card2.cardToImage();
+    
 }
 
 /**
  represents one card
  */
 class Card {
+    
     constructor(rank, suit) {
         this.rank = rank;
         this.suit = suit;
     }
     
+    /**
+     takes card and displays it as an image
+     */
     cardToImage() {
+        var x = document.createElement("IMG");
+        x.setAttribute("width", "79");
+        x.setAttribute("height", "120");
         
+        if(this.suit == "hearts") {
+            x.setAttribute("src", "CardImages/" +this.rank +"H.jpg");
+        }
+        else if(this.suit == "diamonds") {
+            x.setAttribute("src", "CardImages/" +this.rank +"D.jpg");
+        }
+        else if(this.suit == "spades") {
+            x.setAttribute("src", "CardImages/" +this.rank +"S.jpg");
+        }
+        else if(this.suit == "clubs") {
+            x.setAttribute("src", "CardImages/" +this.rank +"C.jpg");
+        }
+          document.body.appendChild(x);
+       
     }
 }
 
@@ -29,7 +57,9 @@ class Card {
  Constructs a full 52 card deck
  */
 class Deck {
+    //Card array "The Deck"
     cards;
+    //Keeping track of number of cards selected from deck
     numCardsSelected;
     
     constructor() {
