@@ -4,18 +4,35 @@
 /**
  deals two cards to a player
  */
+var deck;
+var dealerAt = 0;
+var playerAt = 0;
+
+function init() {
+    deck = new Deck();
+}
+
 function deal() {
     //create new deck
-    var deck = new Deck();
+    //var deck = new Deck();
     
     //select two cards from deck
     var card1 = deck.select();
     var card2 = deck.select();
+    var card3 = deck.select();
+    var card4 = deck.select();
     
+    dealerAt += card2.rank + card4.rank;
+    playerAt += card1.rank + card3.rank;
     //display the cards
-    card1.cardToImage();
-    card2.cardToImage();
+//    card1.cardToImage();
+//    card2.cardToImage();
+    document.getElementById('U_CARDS').appendChild(card1.cardToImage());
     
+    setTimeout(()=> {document.getElementById('D_CARDS').appendChild(card2.cardToImage());}, 1000);
+    setTimeout(()=> {document.getElementById('U_CARDS').appendChild(card3.cardToImage());}, 2000);
+    setTimeout(()=> {document.getElementById('D_CARDS').appendChild(card4.getBackCard());}, 3000);
+    setTimeout(()=> {updateNumbersAt();}, 4000);
 }
 
 /**
@@ -32,7 +49,7 @@ class Card {
      takes card and displays it as an image
      */
     cardToImage() {
-        var x = document.createElement("IMG");
+        var x = new Image();
         x.setAttribute("width", "79");
         x.setAttribute("height", "120");
         
@@ -48,8 +65,21 @@ class Card {
         else if(this.suit == "clubs") {
             x.setAttribute("src", "CardImages/" +this.rank +"C.jpg");
         }
-          document.body.appendChild(x);
+        
+        //document.getElementById('U_CARDS').appendChild(x);
+        //document.getElementById('D_CARDS').appendChild(x);
+        //ocument.body.appendChild(x);
+        return x;
        
+    }
+    
+    getBackCard() {
+        var x = new Image();
+        x.setAttribute("width", "79");
+        x.setAttribute("height", "120");
+        x.setAttribute("src", "CardImages/Red_back.jpg");
+        
+        return x;
     }
 }
 
@@ -99,4 +129,9 @@ class Deck {
             i+=1;
         }
     }
+}
+
+function updateNumbersAt() {
+    
+    document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
 }

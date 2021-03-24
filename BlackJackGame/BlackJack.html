@@ -1,10 +1,58 @@
 <html>
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BlackJack</title>
 <script src="./BlackJack.js"></script>
-</head>
+<style>
+    
+header {
+    padding: 0px;
+    text-align: center;
+    font-size: 35px;
+    color: black;
+}
 
-<body>
-<input id="dealbtn" type="button" value="Press to deal" onclick="deal()"/>
+dealer {
+    padding: 30px;
+    text-align: center;
+    color: black;
+}
+
+
+player {
+    padding: 100px;
+    text-align: center;
+    color: black;
+}
+
+betting {
+    padding: 100px;
+    text-align: center;
+    color: black;
+}
+
+</style>
+
+</head>
+<body style="background-color:DarkGreen;">
+<script>init();</script>
+<header>
+    <h1>BlackJack!</h1>
+</header>
+
+<dealer>
+    <p id ="D_AT"></p>
+    <p id ="D_CARDS"></p>
+</dealer>
+
+<player>
+    <p id ="U_AT"></p>
+    <p id ="U_CARDS"></p>
+</player>
+
+<betting>
+    <input id="dealbtn" type="button" value="Press to deal" onclick="deal()"/>
+</betting>
 </body>
 
 </html>
