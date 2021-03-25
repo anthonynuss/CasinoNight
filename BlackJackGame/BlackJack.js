@@ -1,48 +1,102 @@
-
-//import Card from './Card.js';
+/**
+ Things to be fixed:
+ -ace value
+ -when user receives a lot of cards we stop getting cards
+ */
 
 /**
  deals two cards to a player
  */
-var deck;
-var dealerAt = 0;
-var playerAt = 0;
 
+var deck; //deck to be used
+var dealerAt = 0; //value the dealer is at
+var playerAt = 0; //value the player is at
+var dealerCard2; //this is the dealers hidden card. We want to eventually show it
+
+/**
+ initializes required values
+ */
 function init() {
     deck = new Deck();
 }
 
+/**
+ deals two cards to user and dealer
+ */
 function deal() {
-    //create new deck
-    //var deck = new Deck();
+    document.getElementById('dealbtn').remove(); // remove deal button
+    var x = document.getElementById("carddealt"); // card noise
     
-    //select two cards from deck
-    var card1 = deck.select();
-    var card2 = deck.select();
-    var card3 = deck.select();
-    var card4 = deck.select();
+    //select two cards for each from deck
+    var playerCard1 = deck.select();
+    var dealerCard1 = deck.select();
+    var playerCard2 = deck.select();
+    dealerCard2 = deck.select(); //dealers hidden card
     
-    dealerAt += card2.rank + card4.rank;
-    playerAt += card1.rank + card3.rank;
-    //display the cards
-//    card1.cardToImage();
-//    card2.cardToImage();
-    document.getElementById('U_CARDS').appendChild(card1.cardToImage());
+    dealerAt += dealerCard1.value + dealerCard2.value;
+    playerAt += playerCard1.value + playerCard2.value;
     
-    setTimeout(()=> {document.getElementById('D_CARDS').appendChild(card2.cardToImage());}, 1000);
-    setTimeout(()=> {document.getElementById('U_CARDS').appendChild(card3.cardToImage());}, 2000);
-    setTimeout(()=> {document.getElementById('D_CARDS').appendChild(card4.getBackCard());}, 3000);
-    setTimeout(()=> {updateNumbersAt();}, 4000);
+    //gives player/dealer cards. Timeout used to give dealing animation. Sound also called
+    x.play();
+    document.getElementById('U_CARDS').appendChild(playerCard1.cardToImage());
+    setTimeout(()=> {x.play(); document.getElementById('D_CARDS').appendChild(dealerCard1.cardToImage());}, 1000);
+    setTimeout(()=> {x.play(); document.getElementById('U_CARDS').appendChild(playerCard2.cardToImage());}, 2000);
+    setTimeout(()=> {x.play(); document.getElementById('D_CARDS').appendChild(dealerCard2.getBackCard());}, 3000);
+    
+    setTimeout(()=> {updateNumbersAt();}, 4000); //update what number user is at
+    
+    // display players option buttons
+    setTimeout(()=> {document.getElementById('hitbtn').style.visibility = 'visible';
+                     document.getElementById('standbtn').style.visibility = 'visible';}, 5000);
 }
+
+/**
+ Simulates hitting in blackjack (user recieves another card)
+ */
+function hit() {
+    var cardNew = deck.select();
+    
+    playerAt += cardNew.value;
+    
+    document.getElementById('U_CARDS').appendChild(cardNew.cardToImage());
+    
+    updateNumbersAt();
+    
+    // If user goes over 21 they bust.
+    if(playerAt > 21) {
+        document.getElementById('U_AT').innerHTML = "You Bust!";
+        dealerTurn();
+    }
+    
+}
+
+/**
+ Dealers turn (players turn is over)
+ */
+function dealerTurn() {
+    document.getElementById('hitbtn').remove(); // removes hit option
+    document.getElementById('standbtn').remove(); //removes stand option
+    
+    //removes the back card
+    var dealerCards = document.getElementById('D_CARDS')
+    dealerCards.removeChild(dealerCards.childNodes[1]);
+    
+    //updates what the dealer is add and shows their former hidden card
+    document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
+    document.getElementById('D_CARDS').appendChild(dealerCard2.cardToImage());
+    
+}
+
 
 /**
  represents one card
  */
 class Card {
     
-    constructor(rank, suit) {
-        this.rank = rank;
-        this.suit = suit;
+    constructor(rank, suit, value) {
+        this.rank = rank; // 1-13, represents the card images
+        this.suit = suit; // diamonds, hearts, clubs, spades
+        this.value = value; // face cards are all worth 10. Rank won't work for counting them.
     }
     
     /**
@@ -119,13 +173,13 @@ class Deck {
         this.cards = new Array(52);
         var i = 0;
         for(var rank = 1; rank <= 13; ++rank) {
-            this.cards[i] = new Card(rank, "clubs");
+            this.cards[i] = new Card(rank, "clubs", Math.min(rank, 10));
             i+=1;
-            this.cards[i] = new Card(rank, "diamonds");
+            this.cards[i] = new Card(rank, "diamonds", Math.min(rank, 10));
             i+=1;
-            this.cards[i] = new Card(rank, "hearts");
+            this.cards[i] = new Card(rank, "hearts", Math.min(rank, 10));
             i+=1;
-            this.cards[i] = new Card(rank, "spades");
+            this.cards[i] = new Card(rank, "spades", Math.min(rank, 10));
             i+=1;
         }
     }
