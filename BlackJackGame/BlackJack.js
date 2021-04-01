@@ -12,12 +12,14 @@ var deck; //deck to be used
 var dealerAt = 0; //value the dealer is at
 var playerAt = 0; //value the player is at
 var dealerCard2; //this is the dealers hidden card. We want to eventually show it
+var cardNoise;
 
 /**
  initializes required values
  */
 function init() {
     deck = new Deck();
+    cardNoise = document.getElementById("carddealt"); // card noise
 }
 
 /**
@@ -25,7 +27,7 @@ function init() {
  */
 function deal() {
     document.getElementById('dealbtn').remove(); // remove deal button
-    var x = document.getElementById("carddealt"); // card noise
+    
     
     //select two cards for each from deck
     var playerCard1 = deck.select();
@@ -33,15 +35,16 @@ function deal() {
     var playerCard2 = deck.select();
     dealerCard2 = deck.select(); //dealers hidden card
     
+    //updates the number the player/dealer is at
     dealerAt += dealerCard1.value + dealerCard2.value;
     playerAt += playerCard1.value + playerCard2.value;
     
     //gives player/dealer cards. Timeout used to give dealing animation. Sound also called
-    x.play();
+    cardNoise.play();
     document.getElementById('U_CARDS').appendChild(playerCard1.cardToImage());
-    setTimeout(()=> {x.play(); document.getElementById('D_CARDS').appendChild(dealerCard1.cardToImage());}, 1000);
-    setTimeout(()=> {x.play(); document.getElementById('U_CARDS').appendChild(playerCard2.cardToImage());}, 2000);
-    setTimeout(()=> {x.play(); document.getElementById('D_CARDS').appendChild(dealerCard2.getBackCard());}, 3000);
+    setTimeout(()=> {cardNoise.play(); document.getElementById('D_CARDS').appendChild(dealerCard1.cardToImage());}, 1000);
+    setTimeout(()=> {cardNoise.play(); document.getElementById('U_CARDS').appendChild(playerCard2.cardToImage());}, 2000);
+    setTimeout(()=> {cardNoise.play(); document.getElementById('D_CARDS').appendChild(dealerCard2.getBackCard());}, 3000);
     
     setTimeout(()=> {updateNumbersAt();}, 4000); //update what number user is at
     
@@ -58,6 +61,7 @@ function hit() {
     
     playerAt += cardNew.value;
     
+    cardNoise.play();
     document.getElementById('U_CARDS').appendChild(cardNew.cardToImage());
     
     updateNumbersAt();
@@ -82,9 +86,23 @@ function dealerTurn() {
     dealerCards.removeChild(dealerCards.childNodes[1]);
     
     //updates what the dealer is add and shows their former hidden card
+    cardNoise.play();
     document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
     document.getElementById('D_CARDS').appendChild(dealerCard2.cardToImage());
     
+  
+    while(dealerAt < 17) {
+            var dealerNewCard = deck.select();
+            dealerAt += dealerNewCard.value;
+        setTimeout(()=> {
+            cardNoise.play();
+            document.getElementById('D_CARDS').appendChild(dealerNewCard.cardToImage());
+            document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
+            
+        }, 1000);
+    }
+    
+    result();
 }
 
 
@@ -156,7 +174,7 @@ class Deck {
      */
     select() {
         var hand; //card to be returned
-        var randIndex = Math.floor((Math.random()*52))-this.numCardsSelected; //index at 52-numSelected
+        var randIndex = Math.floor((Math.random()*51))-this.numCardsSelected; //index at 52-numSelected
         hand = this.cards[randIndex];
         //moves card selected to the end of the deck.
         this.cards[randIndex] = this.cards[51-this.numCardsSelected];
@@ -188,4 +206,18 @@ class Deck {
 function updateNumbersAt() {
     
     document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
+}
+
+function result() {
+    if(dealerAt > 21) {
+        document.getElementById('D_AT').innerHTML = "Dealer Bust!";
+    }else if(dealerAt > playerAt) {
+        document.getElementById('D_AT').innerHTML = "Dealer wins!";
+        document.getElementById('U_AT').innerHTML = "You Lose!";
+    }else if(playerAt > dealerAt) {
+        document.getElementById('D_AT').innerHTML = "Dealer loses!";
+        document.getElementById('U_AT').innerHTML = "You win!";
+    }else if(playerAt == dealerAt) {
+        document.getElementById('U_AT').innerHTML = "You push!";
+    }
 }
