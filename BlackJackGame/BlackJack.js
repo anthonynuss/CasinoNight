@@ -9,8 +9,8 @@
  */
 
 var deck; //deck to be used
-var dealerAt = 0; //value the dealer is at
-var playerAt = 0; //value the player is at
+var dealerAt; //value the dealer is at
+var playerAt; //value the player is at
 var dealerCard2; //this is the dealers hidden card. We want to eventually show it
 var cardNoise;
 
@@ -19,6 +19,10 @@ var cardNoise;
  */
 function init() {
     deck = new Deck();
+    dealerAt = 0;
+    playerAt = 0;
+    document.getElementById('D_AT').innerHTML = "";
+    document.getElementById('U_AT').innerHTML = "";
     cardNoise = document.getElementById("carddealt"); // card noise
 }
 
@@ -26,7 +30,7 @@ function init() {
  deals two cards to user and dealer
  */
 function deal() {
-    document.getElementById('dealbtn').remove(); // remove deal button
+    document.getElementById('dealbtn').style.visibility = 'hidden' // remove deal button
     
     
     //select two cards for each from deck
@@ -78,8 +82,8 @@ function hit() {
  Dealers turn (players turn is over)
  */
 function dealerTurn() {
-    document.getElementById('hitbtn').remove(); // removes hit option
-    document.getElementById('standbtn').remove(); //removes stand option
+    document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
+    document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand option
     
     //removes the back card
     var dealerCards = document.getElementById('D_CARDS')
@@ -208,6 +212,9 @@ function updateNumbersAt() {
     document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
 }
 
+/**
+ after dealer and player take their turn.
+ */
 function result() {
     if(dealerAt > 21) {
         document.getElementById('D_AT').innerHTML = "Dealer Bust!";
@@ -219,5 +226,29 @@ function result() {
         document.getElementById('U_AT').innerHTML = "You win!";
     }else if(playerAt == dealerAt) {
         document.getElementById('U_AT').innerHTML = "You push!";
+    }
+    
+    document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
+    
+}
+
+function redeal() {
+    document.getElementById('redealbtn').style.visibility = 'hidden'; //deal option
+    
+    //remove all cards
+    var dealerCards = document.getElementById('D_CARDS')
+    removeAllCards(dealerCards);
+    
+    var playerCards = document.getElementById('U_CARDS')
+    removeAllCards(playerCards);
+    
+    init();
+    
+    document.getElementById('dealbtn').style.visibility = 'visible' //re-deal option
+}
+
+function removeAllCards(parent) {
+    while (parent.firstChild) {
+        parent.removeChild(parent.firstChild);
     }
 }
