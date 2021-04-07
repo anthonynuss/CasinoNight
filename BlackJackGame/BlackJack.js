@@ -32,7 +32,6 @@ function init() {
 function deal() {
     document.getElementById('dealbtn').style.visibility = 'hidden' // remove deal button
     
-    
     //select two cards for each from deck
     var playerCard1 = deck.select();
     var dealerCard1 = deck.select();
@@ -73,7 +72,10 @@ function hit() {
     // If user goes over 21 they bust.
     if(playerAt > 21) {
         document.getElementById('U_AT').innerHTML = "You Bust!";
-        dealerTurn();
+        document.getElementById('D_AT').innerHTML = "Dealer wins!";
+        document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
+        document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand
+        document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
     }
     
 }
@@ -98,12 +100,12 @@ function dealerTurn() {
     while(dealerAt < 17) {
             var dealerNewCard = deck.select();
             dealerAt += dealerNewCard.value;
-        setTimeout(()=> {
+        
             cardNoise.play();
             document.getElementById('D_CARDS').appendChild(dealerNewCard.cardToImage());
             document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
             
-        }, 1000);
+        
     }
     
     result();
@@ -211,6 +213,8 @@ function updateNumbersAt() {
     
     document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
 }
+
+
 
 /**
  after dealer and player take their turn.
