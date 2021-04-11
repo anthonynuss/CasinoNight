@@ -31,26 +31,26 @@ function init() {
  */
 function deal() {
     document.getElementById('dealbtn').style.visibility = 'hidden' // remove deal button
-    
+
     //select two cards for each from deck
     var playerCard1 = deck.select();
     var dealerCard1 = deck.select();
     var playerCard2 = deck.select();
     dealerCard2 = deck.select(); //dealers hidden card
-    
+
     //updates the number the player/dealer is at
     dealerAt += dealerCard1.value + dealerCard2.value;
     playerAt += playerCard1.value + playerCard2.value;
-    
+
     //gives player/dealer cards. Timeout used to give dealing animation. Sound also called
     cardNoise.play();
     document.getElementById('U_CARDS').appendChild(playerCard1.cardToImage());
     setTimeout(()=> {cardNoise.play(); document.getElementById('D_CARDS').appendChild(dealerCard1.cardToImage());}, 1000);
     setTimeout(()=> {cardNoise.play(); document.getElementById('U_CARDS').appendChild(playerCard2.cardToImage());}, 2000);
     setTimeout(()=> {cardNoise.play(); document.getElementById('D_CARDS').appendChild(dealerCard2.getBackCard());}, 3000);
-    
+
     setTimeout(()=> {updateNumbersAt();}, 4000); //update what number user is at
-    
+
     // display players option buttons
     setTimeout(()=> {document.getElementById('hitbtn').style.visibility = 'visible';
                      document.getElementById('standbtn').style.visibility = 'visible';}, 5000);
@@ -61,23 +61,30 @@ function deal() {
  */
 function hit() {
     var cardNew = deck.select();
-    
+
     playerAt += cardNew.value;
-    
+
     cardNoise.play();
     document.getElementById('U_CARDS').appendChild(cardNew.cardToImage());
-    
+
     updateNumbersAt();
-    
+
     // If user goes over 21 they bust.
     if(playerAt > 21) {
         document.getElementById('U_AT').innerHTML = "You Bust!";
         document.getElementById('D_AT').innerHTML = "Dealer wins!";
+        //removes the back card
+        var dealerCards = document.getElementById('D_CARDS')
+        dealerCards.removeChild(dealerCards.childNodes[1]);
+
+        //shows the dealers hidden card
+        cardNoise.play();
+        document.getElementById('D_CARDS').appendChild(dealerCard2.cardToImage());
         document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
         document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand
         document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
     }
-    
+
 }
 
 /**
@@ -86,28 +93,28 @@ function hit() {
 function dealerTurn() {
     document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
     document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand option
-    
+
     //removes the back card
     var dealerCards = document.getElementById('D_CARDS')
     dealerCards.removeChild(dealerCards.childNodes[1]);
-    
+
     //updates what the dealer is add and shows their former hidden card
     cardNoise.play();
     document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
     document.getElementById('D_CARDS').appendChild(dealerCard2.cardToImage());
-    
-  
+
+
     while(dealerAt < 17) {
             var dealerNewCard = deck.select();
             dealerAt += dealerNewCard.value;
-        
+
             cardNoise.play();
             document.getElementById('D_CARDS').appendChild(dealerNewCard.cardToImage());
             document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
-            
-        
+
+
     }
-    
+
     result();
 }
 
@@ -116,13 +123,13 @@ function dealerTurn() {
  represents one card
  */
 class Card {
-    
+
     constructor(rank, suit, value) {
         this.rank = rank; // 1-13, represents the card images
         this.suit = suit; // diamonds, hearts, clubs, spades
         this.value = value; // face cards are all worth 10. Rank won't work for counting them.
     }
-    
+
     /**
      takes card and displays it as an image
      */
@@ -130,7 +137,7 @@ class Card {
         var x = new Image();
         x.setAttribute("width", "79");
         x.setAttribute("height", "120");
-        
+
         if(this.suit == "hearts") {
             x.setAttribute("src", "CardImages/" +this.rank +"H.jpg");
         }
@@ -143,20 +150,20 @@ class Card {
         else if(this.suit == "clubs") {
             x.setAttribute("src", "CardImages/" +this.rank +"C.jpg");
         }
-        
+
         //document.getElementById('U_CARDS').appendChild(x);
         //document.getElementById('D_CARDS').appendChild(x);
         //ocument.body.appendChild(x);
         return x;
-       
+
     }
-    
+
     getBackCard() {
         var x = new Image();
         x.setAttribute("width", "79");
         x.setAttribute("height", "120");
         x.setAttribute("src", "CardImages/Red_back.jpg");
-        
+
         return x;
     }
 }
@@ -169,12 +176,12 @@ class Deck {
     cards;
     //Keeping track of number of cards selected from deck
     numCardsSelected;
-    
+
     constructor() {
         this.numCardsSelected = 0;
         this.init();
     }
-    
+
     /**
      returns random card from deck. Then makes sure you won't get that same card again
      */
@@ -186,10 +193,10 @@ class Deck {
         this.cards[randIndex] = this.cards[51-this.numCardsSelected];
         this.cards[51-this.numCardsSelected] = hand;
         this.numCardsSelected++;
-        
+
         return hand;
     }
-    
+
     /**
      initializes a deck of 52 cards
      */
@@ -210,7 +217,7 @@ class Deck {
 }
 
 function updateNumbersAt() {
-    
+
     document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
 }
 
@@ -231,23 +238,23 @@ function result() {
     }else if(playerAt == dealerAt) {
         document.getElementById('U_AT').innerHTML = "You push!";
     }
-    
+
     document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
-    
+
 }
 
 function redeal() {
     document.getElementById('redealbtn').style.visibility = 'hidden'; //deal option
-    
+
     //remove all cards
     var dealerCards = document.getElementById('D_CARDS')
     removeAllCards(dealerCards);
-    
+
     var playerCards = document.getElementById('U_CARDS')
     removeAllCards(playerCards);
-    
+
     init();
-    
+
     document.getElementById('dealbtn').style.visibility = 'visible' //re-deal option
 }
 
