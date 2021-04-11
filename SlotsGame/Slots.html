@@ -1,0 +1,82 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Slots</title>
+<script src="./Slots.js">init();</script>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+
+<style>
+    body {
+      background-image: url('SlotsImages/background.jpg');
+    }
+
+    header {
+        padding: 0px;
+        text-align: center;
+        font-size: 35px;
+        color: white;
+    }
+
+
+    slots {
+
+        padding: 100px;
+        text-align: center;
+        color: black;
+    }
+
+    options {
+        padding: 100px;
+        text-align: center;
+        color: black;
+    }
+    button {
+        transition: all .5s ease;
+        color: #fff;
+        border: 3px solid white;
+        font-family:'Montserrat', sans-serif;
+        text-transform: uppercase;
+        text-align: center;
+        line-height: 1;
+        font-size: 17px;
+        background-color : transparent;
+        padding: 10px;
+        outline: none;
+        border-radius: 4px;
+        position: absolute;
+        width:100;
+        height:70;
+
+    }
+    button:hover {
+        color: #001F3F;
+        background-color: #fff;
+
+    }
+
+</style>
+
+</head>
+    <body>
+
+    <header>
+        <h1>Slots!</h1>
+    </header>
+
+    <div style="text-align:center">
+        <canvas id="myCanvas" width="1000" height="500"
+        style="border:1px solid #000000;">
+        </canvas>
+
+        <button style="top:490;left:970;" onClick="spinReels()">SPIN REELS</button>
+
+        <button style="top:490;left:805;">BET MAX</button>
+
+        <button style="top:490;left:637;">BET ONE</button>
+    </div>
+
+<script>init();</script>
+
+</body>
+
+</html>
