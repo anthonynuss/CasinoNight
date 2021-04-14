@@ -17,19 +17,6 @@
         color: white;
     }
 
-
-    slots {
-
-        padding: 100px;
-        text-align: center;
-        color: black;
-    }
-
-    options {
-        padding: 100px;
-        text-align: center;
-        color: black;
-    }
     button {
         transition: all .5s ease;
         color: #fff;
@@ -66,13 +53,20 @@
     <div style="text-align:center">
         <canvas id="myCanvas" width="1000" height="500"
         style="border:1px solid #000000;">
+
         </canvas>
+
+        <p id ="U_WON"; style="position: absolute; top:345;left:530;color:red;font-size:60px;"></p>
+
+        <p id ="U_COINS"; style="position: absolute; top:345;left:670;color:red;font-size:60px;"></p>
+
+        <p id ="U_PLAYED"; style="position: absolute; top:345;left:920;color:red;font-size:60px;"></p>
 
         <button style="top:490;left:970;" onClick="spinReels()">SPIN REELS</button>
 
-        <button style="top:490;left:805;">BET MAX</button>
+        <button style="top:490;left:805;" onClick="betMax()">BET MAX</button>
 
-        <button style="top:490;left:637;">BET ONE</button>
+        <button style="top:490;left:637;" onClick="betOne()">BET ONE</button>
     </div>
 
 
