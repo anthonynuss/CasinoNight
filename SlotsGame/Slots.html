@@ -3,19 +3,13 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Slots</title>
 <script src="./Slots.js">init();</script>
-<link rel="stylesheet" type="text/css" href="Slots.css" />
 
 <style>
     body {
       background-image: url('SlotsImages/background.jpg');
     }
 
-    header {
-        padding: 0px;
-        text-align: center;
-        font-size: 35px;
-        color: white;
-    }
+
 
     button {
         transition: all .5s ease;
@@ -46,27 +40,43 @@
 </head>
     <body>
 
-    <header>
-        <h1>Slots!</h1>
-    </header>
+      <audio id="coininsert" src="./SlotsSounds/CoinInsert.mp3" type="audio/mpeg"></audio>
+
+      <audio id="slotstop" src="./SlotsSounds/ReelStop.mp3" type="audio/mpeg"></audio>
+
+      <audio id="slotspin" src="./SlotsSounds/SlotSpin.mp3" type="audio/mpeg"></audio>
+
+      <audio id="smallwin" src="./SlotsSounds/SmallWin.mp3" type="audio/mpeg"></audio>
+
+      <audio id="mediumwin" src="./SlotsSounds/MediumWin.mp3" type="audio/mpeg"></audio>
+
+      <audio id="jackpot" src="./SlotsSounds/Jackpot.mp3" type="audio/mpeg"></audio>
+
+      <audio id="coineject" src="./SlotsSounds/CoinEject.mp3" type="audio/mpeg"></audio>
+
+
 
     <div style="text-align:center">
+
+         <img src="./SlotsImages/PayTable2.jpg" alt="PayTable">
         <canvas id="myCanvas" width="1000" height="500"
         style="border:1px solid #000000;">
 
         </canvas>
 
-        <p id ="U_WON"; style="position: absolute; top:345;left:530;color:red;font-size:60px;"></p>
+        <p id ="U_WON"; style="position: absolute; top:505;left:530;color:red;font-size:60px;"></p>
 
-        <p id ="U_COINS"; style="position: absolute; top:345;left:670;color:red;font-size:60px;"></p>
+        <p id ="U_COINS"; style="position: absolute; top:505;left:670;color:red;font-size:60px;"></p>
 
-        <p id ="U_PLAYED"; style="position: absolute; top:345;left:920;color:red;font-size:60px;"></p>
+        <p id ="U_PLAYED"; style="position: absolute; top:505;left:920;color:red;font-size:60px;"></p>
 
-        <button style="top:490;left:970;" onClick="spinReels()">SPIN REELS</button>
+        <button style="top:650;left:970;" onClick="spinReels()">SPIN REELS</button>
 
-        <button style="top:490;left:805;" onClick="betMax()">BET MAX</button>
+        <button style="top:650;left:805;" onClick="betMax()">BET MAX</button>
 
-        <button style="top:490;left:637;" onClick="betOne()">BET ONE</button>
+        <button style="top:650;left:637;" onClick="betOne()">BET ONE</button>
+
+        <button style="top:650;left:410;" onClick="coinEject()">COIN EJECT</button>
     </div>
 
 
