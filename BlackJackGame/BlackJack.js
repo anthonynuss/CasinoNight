@@ -229,6 +229,7 @@ function updateNumbersAt() {
 function result() {
     if(dealerAt > 21) {
         document.getElementById('D_AT').innerHTML = "Dealer Bust!";
+        document.getElementById('U_AT').innerHTML = "You win!";
     }else if(dealerAt > playerAt) {
         document.getElementById('D_AT').innerHTML = "Dealer wins!";
         document.getElementById('U_AT').innerHTML = "You Lose!";
