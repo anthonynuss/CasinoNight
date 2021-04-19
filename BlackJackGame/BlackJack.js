@@ -91,6 +91,8 @@ function hit() {
  Dealers turn (players turn is over)
  */
 function dealerTurn() {
+    var timeoutValue = 0;
+
     document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
     document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand option
 
@@ -107,15 +109,16 @@ function dealerTurn() {
     while(dealerAt < 17) {
             var dealerNewCard = deck.select();
             dealerAt += dealerNewCard.value;
-
+            setTimeout(()=> {
             cardNoise.play();
             document.getElementById('D_CARDS').appendChild(dealerNewCard.cardToImage());
             document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
-
+            }, timeoutValue);
+            timeoutValue += 1000;
 
     }
 
-    result();
+    setTimout(()=> {result();}, timeoutValue);
 }
 
 
@@ -179,7 +182,7 @@ class Deck {
 
     constructor() {
         this.numCardsSelected = 0;
-        this.init();
+        this.deckInit();
     }
 
     /**
@@ -187,7 +190,7 @@ class Deck {
      */
     select() {
         var hand; //card to be returned
-        var randIndex = Math.floor((Math.random()*51))-this.numCardsSelected; //index at 52-numSelected
+        var randIndex = Math.floor((Math.random()*52))-this.numCardsSelected; //index at 52-numSelected
         hand = this.cards[randIndex];
         //moves card selected to the end of the deck.
         this.cards[randIndex] = this.cards[51-this.numCardsSelected];
@@ -200,7 +203,7 @@ class Deck {
     /**
      initializes a deck of 52 cards
      */
-    init() {
+    deckInit() {
         this.cards = new Array(52);
         var i = 0;
         for(var rank = 1; rank <= 13; ++rank) {
@@ -263,4 +266,8 @@ function removeAllCards(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+}
+
+function testWord(p, t) {
+  return p+t;
 }
