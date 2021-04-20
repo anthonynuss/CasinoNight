@@ -4,70 +4,96 @@
 <title>BlackJack</title>
 <script src="./BlackJack.js"></script>
 <style>
-    
+
+body {
+  background-image: url('CardImages/table.jpg');
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 header {
     padding: 0px;
     text-align: center;
-    font-size: 35px;
-    color: black;
-}
-
-dealer {
-    padding: 30px;
-    text-align: center;
+    font-size: 25px;
     color: black;
 }
 
 
-player {
-    padding: 100px;
+button {
+    transition: all .5s ease;
+    color: #fff;
+    border: 3px solid white;
+    font-family:'Montserrat', sans-serif;
+    text-transform: uppercase;
     text-align: center;
-    color: black;
-}
+    line-height: 1;
+    font-size: 17px;
+    background-color : transparent;
+    padding: 10px;
+    outline: none;
+    border-radius: 4px;
+    position: absolute;
+    width:100;
+    height:70;
 
-options {
-    padding: 100px;
-    text-align: center;
-    color: black;
+}
+button:hover {
+    color: #001F3F;
+    background-color: #fff;
+
 }
 
 </style>
 
 </head>
-<body style="background-color:DarkGreen;">
+
+<body >
     <audio id="carddealt">
       <source src="CardDealt.mp3" type="audio/mpeg">
       Your browser does not support the audio element.
     </audio>
-    
+
 <header>
     <h1>BlackJack!</h1>
 </header>
 
-<dealer>
+  <div style="text-align:center">
+
+
+
     <p id ="D_AT"></p>
     <p id ="D_CARDS"></p>
-</dealer>
 
-<player>
-    <p id ="U_AT"></p>
-    <p id ="U_CARDS"></p>
-</player>
+    <p id ="U_AT" style="position: relative; top:300;"></p>
+    <p id ="U_CARDS" style="position: relative; top:305;"></p>
 
-<options>
-    <button id="dealbtn" onclick="deal()">Press to deal</button>
-    
-    <button id="hitbtn" onclick="hit()">Hit</button>
+
+
+    <p id ="PLACEBET" style="font-size: 40px; position:absolute; top:500;left:200;">Place your bet!</p>
+    <p id = "C_AMOUNT" style="font-size: 30px; position:absolute; top:550;left:200;">Chip amount = 0</p>
+    <p id = "B_AMOUNT" style="font-size: 30px; position:absolute; top:575;left:200;">Current bet = 0</p>
+
+    <button id="dealbtn" style="top:650;left:300;" onclick="deal()">Press to deal</button>
+    <script>document.getElementById('dealbtn').style.visibility = 'hidden';</script>
+
+    <button id="hitbtn" style="top:650;left:300;" onclick="hit()">Hit</button>
     <script>document.getElementById('hitbtn').style.visibility = 'hidden';</script>
-    
-    <button id="standbtn" onclick="dealerTurn()">Stand</button>
+
+    <button id="standbtn" style="top:650;left:400;" onclick="dealerTurn()">Stand</button>
     <script>document.getElementById('standbtn').style.visibility = 'hidden';</script>
-    
-    <button id="redealbtn" onclick="redeal()">Re-deal</button>
+
+    <button id="redealbtn" style="top:650;left:300;" onclick="redeal()">Re-deal</button>
     <script>document.getElementById('redealbtn').style.visibility = 'hidden';</script>
-    
-</options>
-<script>init();</script>
+
+
+    <input id ="C_FIVE" type="image" src="./CardImages/bluechip.png" style="position:absolute; top:500;left:50;" onClick="bet(5);"/>
+    <input id ="C_TEN" type="image" src="./CardImages/tenchip.png" style="position:absolute; top:600;left:100;" onClick="bet(10);"/>
+    <input id ="C_TFIVE" type="image" src="./CardImages/blackchip.png" style="position:absolute; top:700;left:150;" onClick="bet(25);"/>
+
+    <script>init();</script>
+
 </body>
 
 </html>
