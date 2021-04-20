@@ -106,7 +106,11 @@ function hit() {
  Dealers turn (players turn is over)
  */
 function dealerTurn() {
+<<<<<<< HEAD
     var timeoutValue = 1000;
+=======
+    var timeoutValue = 0;
+>>>>>>> 9ea6e6a401b0470ad994862b19df33d4da472fc7
 
     document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
     document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand option
@@ -133,7 +137,11 @@ function dealerTurn() {
 
     }
 
+<<<<<<< HEAD
     setTimeout(()=> {result();}, timeoutValue);
+=======
+    setTimout(()=> {result();}, timeoutValue);
+>>>>>>> 9ea6e6a401b0470ad994862b19df33d4da472fc7
 }
 
 
@@ -205,7 +213,11 @@ class Deck {
      */
     select() {
         var hand; //card to be returned
+<<<<<<< HEAD
         var randIndex = Math.max(0, Math.floor((Math.random()*52))-this.numCardsSelected); //index at 52-numSelected
+=======
+        var randIndex = Math.floor((Math.random()*52))-this.numCardsSelected; //index at 52-numSelected
+>>>>>>> 9ea6e6a401b0470ad994862b19df33d4da472fc7
         hand = this.cards[randIndex];
         //moves card selected to the end of the deck.
         this.cards[randIndex] = this.cards[51-this.numCardsSelected];
@@ -265,7 +277,10 @@ function result() {
     if(dealerAt > 21) {
         document.getElementById('D_AT').innerHTML = "Dealer Bust!";
         document.getElementById('U_AT').innerHTML = "You win!";
+<<<<<<< HEAD
         chips += betAmount*2;
+=======
+>>>>>>> 9ea6e6a401b0470ad994862b19df33d4da472fc7
     }else if(dealerAt > playerAt) {
         document.getElementById('D_AT').innerHTML = "Dealer wins!";
         document.getElementById('U_AT').innerHTML = "You Lose!";
@@ -308,4 +323,8 @@ function removeAllCards(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
     }
+}
+
+function testWord(p, t) {
+  return p+t;
 }
