@@ -1,0 +1,11 @@
+{
+  "name": "blackjackgame",
+  "version": "1.0.0",
+  "description": "A blackjack game made in HTML and JS",
+  "main": "BlackJack.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "author": "Anthony Nuss",
+  "license": "ISC"
+}

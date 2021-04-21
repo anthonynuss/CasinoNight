@@ -1,14 +1,16 @@
-/**
- Things to be fixed:
- -ace value
- -when user receives a lot of cards we stop getting cards
- */
-
-/**
- deals two cards to a player
- */
+/*
+Blackjack is a casino banked game, meaning that players compete against the house rather than each other.
+The objective is to get a hand total of closer to 21 than the dealer without going over 21 (busting).
+At the start of a Blackjack game, the players and the dealer receive two cards each.
+The players' cards are normally dealt face up, while the dealer has one face down (called the hole card) and one face up.
+The best possible Blackjack hand is an opening deal of an ace with any ten-point card.
+The house advantage of this game is derived from several rules that favour the dealer.
+The most significant of these is that the player must act before the dealer, allowing the player to bust and lose their bet before the dealer plays.
+*/
 
 var deck; //deck to be used
+var chips = 300; //starting chips
+var betAmount; //amount the player bets each round
 var dealerAt; //value the dealer is at
 var playerAt; //value the player is at
 var dealerCard2; //this is the dealers hidden card. We want to eventually show it
@@ -21,16 +23,33 @@ function init() {
     deck = new Deck();
     dealerAt = 0;
     playerAt = 0;
+    betAmount = 0;
+
+    //different amount labels
+    document.getElementById('C_AMOUNT').innerHTML = "Chip amount = " +chips;
+    document.getElementById('B_AMOUNT').innerHTML = "Current bet = " +betAmount;
     document.getElementById('D_AT').innerHTML = "";
     document.getElementById('U_AT').innerHTML = "";
+    document.getElementById("C_FIVE").disabled = false;
+    document.getElementById("C_TEN").disabled = false;
+    document.getElementById("C_TFIVE").disabled = false;
+
     cardNoise = document.getElementById("carddealt"); // card noise
 }
 
-/**
- deals two cards to user and dealer
+
+/*
+ deals two cards to user and dealer when user presses deal button. Selects cards from the deck
+ randomly and updates their values at.
  */
 function deal() {
     document.getElementById('dealbtn').style.visibility = 'hidden' // remove deal button
+
+    //disable the betting buttons
+    document.getElementById("C_FIVE").disabled = true;
+    document.getElementById("C_TEN").disabled = true;
+    document.getElementById("C_TFIVE").disabled = true;
+    document.getElementById('PLACEBET').innerHTML = "";
 
     //select two cards for each from deck
     var playerCard1 = deck.select();
@@ -54,14 +73,16 @@ function deal() {
     // display players option buttons
     setTimeout(()=> {document.getElementById('hitbtn').style.visibility = 'visible';
                      document.getElementById('standbtn').style.visibility = 'visible';}, 5000);
+
 }
 
+
 /**
- Simulates hitting in blackjack (user recieves another card)
+ Simulates hitting in blackjack (user recieves another card). This happens when user presses hit
+ during their turn.
  */
 function hit() {
-    var cardNew = deck.select();
-
+    var cardNew = deck.select(); //select new card
     playerAt += cardNew.value;
 
     cardNoise.play();
@@ -69,11 +90,12 @@ function hit() {
 
     updateNumbersAt();
 
-    // If user goes over 21 they bust.
+    // If user goes over 21 they bust (user losses)
     if(playerAt > 21) {
         document.getElementById('U_AT').innerHTML = "You Bust!";
         document.getElementById('D_AT').innerHTML = "Dealer wins!";
-        //removes the back card
+
+        //removes the dealers back card
         var dealerCards = document.getElementById('D_CARDS')
         dealerCards.removeChild(dealerCards.childNodes[1]);
 
@@ -83,14 +105,18 @@ function hit() {
         document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
         document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand
         document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
+
     }
 
 }
 
+
 /**
- Dealers turn (players turn is over)
+ Dealers turn (players turn is over. Player stands meaning they haven't won or lost yet)
  */
 function dealerTurn() {
+    var timeoutValue = 1000; //delay value to be used
+
     document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
     document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand option
 
@@ -103,19 +129,21 @@ function dealerTurn() {
     document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
     document.getElementById('D_CARDS').appendChild(dealerCard2.cardToImage());
 
-
+    //keep receiving cards until the dealer is at 17.
     while(dealerAt < 17) {
             var dealerNewCard = deck.select();
             dealerAt += dealerNewCard.value;
-
+            setTimeout(()=> {
             cardNoise.play();
             document.getElementById('D_CARDS').appendChild(dealerNewCard.cardToImage());
             document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
-
+            }, timeoutValue);
+            timeoutValue += 1000;
 
     }
 
-    result();
+    setTimeout(()=> {result();}, timeoutValue);
+
 }
 
 
@@ -151,13 +179,13 @@ class Card {
             x.setAttribute("src", "CardImages/" +this.rank +"C.jpg");
         }
 
-        //document.getElementById('U_CARDS').appendChild(x);
-        //document.getElementById('D_CARDS').appendChild(x);
-        //ocument.body.appendChild(x);
         return x;
 
     }
 
+    /*
+    used for the dealer. Is the image of the back of a card
+    */
     getBackCard() {
         var x = new Image();
         x.setAttribute("width", "79");
@@ -172,23 +200,28 @@ class Card {
  Constructs a full 52 card deck
  */
 class Deck {
+
     //Card array "The Deck"
     cards;
+
     //Keeping track of number of cards selected from deck
     numCardsSelected;
 
     constructor() {
         this.numCardsSelected = 0;
-        this.init();
+        this.deckInit();
     }
 
     /**
-     returns random card from deck. Then makes sure you won't get that same card again
+     returns random card from deck. Then makes sure you won't get that same card again.
+     This is done by selecting a random card and then swapping it to the end of the deck and
+     making sure you cannot select a number at the end of the deck
      */
     select() {
         var hand; //card to be returned
-        var randIndex = Math.floor((Math.random()*51))-this.numCardsSelected; //index at 52-numSelected
+        var randIndex = Math.max(0, Math.floor((Math.random()*52))-this.numCardsSelected); //select (0-51) - numCardsSelected
         hand = this.cards[randIndex];
+
         //moves card selected to the end of the deck.
         this.cards[randIndex] = this.cards[51-this.numCardsSelected];
         this.cards[51-this.numCardsSelected] = hand;
@@ -200,7 +233,7 @@ class Deck {
     /**
      initializes a deck of 52 cards
      */
-    init() {
+    deckInit() {
         this.cards = new Array(52);
         var i = 0;
         for(var rank = 1; rank <= 13; ++rank) {
@@ -216,36 +249,63 @@ class Deck {
     }
 }
 
-function updateNumbersAt() {
 
+/*
+user bets a certain amount. Amount is updated in appropriate variables. Makes sure they have enough chips
+for the bet.
+*/
+function bet(amount) {
+  if((chips - amount) >= 0) {
+    chips -= amount;
+    betAmount += amount;
+    document.getElementById('C_AMOUNT').innerHTML = "Chip amount = " +chips;
+    document.getElementById('B_AMOUNT').innerHTML = "Current bet = " +betAmount;
+
+    document.getElementById('dealbtn').style.visibility = 'visible'; //let the user deal after placing beth
+  }
+}
+
+
+/*
+updates the number the player is at
+*/
+function updateNumbersAt() {
     document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
 }
 
 
-
 /**
- after dealer and player take their turn.
+ after dealer and player take their turn. Determines who wins.
  */
 function result() {
     if(dealerAt > 21) {
         document.getElementById('D_AT').innerHTML = "Dealer Bust!";
         document.getElementById('U_AT').innerHTML = "You win!";
+        chips += betAmount*2;
     }else if(dealerAt > playerAt) {
         document.getElementById('D_AT').innerHTML = "Dealer wins!";
         document.getElementById('U_AT').innerHTML = "You Lose!";
     }else if(playerAt > dealerAt) {
         document.getElementById('D_AT').innerHTML = "Dealer loses!";
         document.getElementById('U_AT').innerHTML = "You win!";
+        chips += betAmount*2;
     }else if(playerAt == dealerAt) {
-        document.getElementById('U_AT').innerHTML = "You push!";
+        document.getElementById('U_AT').innerHTML = "You push!"; //push means tie in blackjack
     }
 
     document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
+    document.getElementById('C_AMOUNT').innerHTML = "Chip amount = " +chips;
 
 }
 
+
+/*
+when player presses redeal button.
+*/
 function redeal() {
-    document.getElementById('redealbtn').style.visibility = 'hidden'; //deal option
+    document.getElementById('redealbtn').style.visibility = 'hidden'; //redeal option hidden
+
+    document.getElementById('PLACEBET').innerHTML = "Place your bet!";
 
     //remove all cards
     var dealerCards = document.getElementById('D_CARDS')
@@ -256,9 +316,12 @@ function redeal() {
 
     init();
 
-    document.getElementById('dealbtn').style.visibility = 'visible' //re-deal option
 }
 
+
+/*
+removes all cards on the screen
+*/
 function removeAllCards(parent) {
     while (parent.firstChild) {
         parent.removeChild(parent.firstChild);
