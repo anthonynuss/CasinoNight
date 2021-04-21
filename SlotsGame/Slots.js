@@ -1,5 +1,8 @@
 /*
-rankings:
+Definition for Slot Machine: a coin-operated gaming machine that generates random combinations of symbols on a dial,
+certain combinations winning varying amounts of money for the player.
+
+rankings for slot machine (best to worst):
 seven
 diamond
 cherry
@@ -22,13 +25,18 @@ var stop1, stop2, stop3; //the values we stoped at
 var coinInsertSound, slotStopSound, spinSound, smallWinSound, mediumWinSound, jackpotSound, coinEjectSound; //sounds
 
 function init() {
-    slotReel = ["diamond","dc", "cherry", "cs", "seven", "sb", "bars", "bw", "watermellon", "wh", "horseshoe", "hd"];
+    slotReel = ["diamond","dc", "cherry", "cs", "seven", "sb", "bars", "bw", "watermellon", "wh", "horseshoe", "hd"]; //array of the different things to land on
+
+    //hardcoded the default starting position. Does not affect gameplay
     slot1 = 0;
     slot2 = 3;
     slot3 = 8;
-    coins = 300;
+
+    coins = 300; //starting coins
     coinsPlayed = 0;
     amountWon = 0;
+
+    //initializing all in-game sounds.
     coinInsertSound = document.getElementById("coininsert");
     slotStopSound = document.getElementById("slotstop");
     spinSound = document.getElementById("slotspin");
@@ -62,7 +70,7 @@ function init() {
 }
 
 /*
-  draws one slot reel
+  draws one slot reel with given image and position
 */
 function drawSlot(file, x, y) {
     var reelImg = new Image();
@@ -73,19 +81,26 @@ function drawSlot(file, x, y) {
 }
 
 
-
+/*
+When user presses spin reels. User has to have a coin in machine to spin. It spins the three reels and stops randomly on each.
+The animation of spinning the reels was done by changing the different images really fast.
+*/
 function spinReels() {
   if(coinsPlayed != 0) {
     spinSound.play();
 
+    //update users coins
     coins -= coinsPlayed;
     document.getElementById('U_COINS').style.left = 790 - (coins.toString().length*40);
     document.getElementById('U_COINS').innerHTML = coins;
 
-    var timeoutValue = 100;
+    var timeoutValue = 100; //initialize a delay variables
+
+    //the random stops for each reel
     stop1 = Math.floor(Math.random() * 12);
     stop2 = Math.floor(Math.random() * 12);
     stop3 = Math.floor(Math.random() * 12);
+
     //jackpot win hardcode
     // stop1 = 5;
     // stop2 = 2;
@@ -101,12 +116,12 @@ function spinReels() {
     // stop2 = 8;
     // stop3 = 6;
 
+    //goes through every image 8 times to give spinning effect.
     for(var i = 0; i < 108; i++) {
 
-      //play correct stopping noises
+      //play reel stopping noise when each reel stops
       if((i == 48 + stop1) || (i == 72 + stop2) || (i == 96 + stop3)) {
         setTimeout(()=> {slotStopSound.play();}, timeoutValue);
-        //if(i == 96 + stop3) {setTimeout(()=> {spinSound.stop();}, timeoutValue);}
       }
 
       //first reel spin. We want it to stop first. Used 48 as it is the 0th element of array after 4 spins.
@@ -129,6 +144,7 @@ function spinReels() {
     }
 
     setTimeout(()=> {payOut();}, timeoutValue);
+
   }
 
 }
@@ -174,10 +190,15 @@ function betMax() {
   }
 }
 
+
+/*
+returns the coins the user has put in the machine
+*/
 function coinEject() {
   if(coinsPlayed != 0) {
     coinEjectSound.play();
     coinsPlayed = 0;
+
     //formats the position of the labels so they appear to fit inside the LED displays
     document.getElementById('U_COINS').style.left = 790 - (coins.toString().length*40);
 
@@ -188,6 +209,9 @@ function coinEject() {
 }
 
 
+/*
+Determines if the user won and how much they won.
+*/
 function payOut() {
   amountWon = 0;
 

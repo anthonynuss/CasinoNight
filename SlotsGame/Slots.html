@@ -5,11 +5,10 @@
 <script src="./Slots.js">init();</script>
 
 <style>
+
     body {
       background-image: url('SlotsImages/background.jpg');
     }
-
-
 
     button {
         transition: all .5s ease;
@@ -29,6 +28,7 @@
         height:70;
 
     }
+
     button:hover {
         color: #001F3F;
         background-color: #fff;
@@ -39,6 +39,7 @@
 
 </head>
     <body>
+      <button id="backbtn" style="top:0;left:0;"><a href="../Welcome/Landing.html">Back</a></button>
 
       <audio id="coininsert" src="./SlotsSounds/CoinInsert.mp3" type="audio/mpeg"></audio>
 
@@ -54,14 +55,12 @@
 
       <audio id="coineject" src="./SlotsSounds/CoinEject.mp3" type="audio/mpeg"></audio>
 
-
-
     <div style="text-align:center">
 
-         <img src="./SlotsImages/PayTable2.jpg" alt="PayTable">
+        <img src="./SlotsImages/PayTable2.jpg" alt="PayTable">
+
         <canvas id="myCanvas" width="1000" height="500"
         style="border:1px solid #000000;">
-
         </canvas>
 
         <p id ="U_WON"; style="position: absolute; top:505;left:530;color:red;font-size:60px;"></p>
@@ -77,16 +76,11 @@
         <button style="top:650;left:637;" onClick="betOne()">BET ONE</button>
 
         <button style="top:650;left:410;" onClick="coinEject()">COIN EJECT</button>
+
     </div>
 
+    <script>init();</script>
 
-
-
-
-
-
-<script>init();</script>
-
-</body>
+  </body>
 
 </html>
