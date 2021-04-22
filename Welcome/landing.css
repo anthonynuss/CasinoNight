@@ -20,9 +20,9 @@ ul.navbar {
     list-style-type: none;
     margin: 0px;
     padding: 0px;
-    background-color: transparent;
+    background-color: rgb(32, 32, 32);
     overflow: hidden;
-    border-bottom: 3px solid red;
+    border-bottom: 3px solid black;
 }
 
 li {
