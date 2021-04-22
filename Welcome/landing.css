@@ -1,28 +1,44 @@
+body{
+    background-image: url("./WelcomeImages/welcomeBackground.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: 100% 100%;
+}
+
 .heading {
     text-align: center;
-    color: black;
+    color: white;
+    
+    margin: 0;
+}
+
+img{
+    margin: 0;
 }
 
 ul.navbar {
-    margin: 10px;
-    padding: 0;
-    background-color: black;
-    width: 100%;
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+    background-color: transparent;
+    overflow: hidden;
+    border-bottom: 3px solid red;
 }
 
 li {
+    display:inline;
     list-style-type: none;
-    float: center;
-    border-bottom: 5px solid red;
-    width: 100%;
+    float: left;
+    margin-bottom: 2px;
 }
 
 li a {
-    display: block;
-    color: white;
+    color: lightgrey;
     text-align: center;
-    padding: 14px 16px;
     text-decoration: none;
+    margin: 0;
+    padding:16px;
+    font-size: 30px;  
 }
 
   /* Change the link color to #111 (black) on hover */
@@ -34,7 +50,7 @@ li a:hover {
     text-align: center;
     width: 50%;
     float: left;
-    background-color: darkolivegreen;
+    background-color:transparent;
     height: 500px;
 }
 
@@ -42,6 +58,6 @@ li a:hover {
     text-align: center;
     width: 50%;
     float: right;
-    background-color: darkred;
+    background-color:transparent;
     height: 500px;
 }
