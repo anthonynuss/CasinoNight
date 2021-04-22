@@ -45,19 +45,3 @@ li a {
 li a:hover {
     background-color: darkgreen;
 }
-
-.signup {
-    text-align: center;
-    width: 50%;
-    float: left;
-    background-color:transparent;
-    height: 500px;
-}
-
-.login {
-    text-align: center;
-    width: 50%;
-    float: right;
-    background-color:transparent;
-    height: 500px;
-}
