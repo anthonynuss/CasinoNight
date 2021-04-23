@@ -13,6 +13,8 @@ var chips = 300; //starting chips
 var betAmount; //amount the player bets each round
 var dealerAt; //value the dealer is at
 var playerAt; //value the player is at
+var playerNumOfAces; //aces are worth 1 or 11 which ever keeps the player below 21.
+var dealerNumOfAces;
 var dealerCard2; //this is the dealers hidden card. We want to eventually show it
 var cardNoise;
 
@@ -24,6 +26,8 @@ function init() {
     dealerAt = 0;
     playerAt = 0;
     betAmount = 0;
+    playerNumOfAces = 0;
+    dealerNumOfAces = 0;
 
     //different amount labels
     document.getElementById('C_AMOUNT').innerHTML = "Chip amount = " +chips;
@@ -57,9 +61,28 @@ function deal() {
     var playerCard2 = deck.select();
     dealerCard2 = deck.select(); //dealers hidden card
 
+    //blackjack hardcode
+    // var playerCard1 = new Card(1, "hearts", 1);
+    // var playerCard2 = new Card(10, "hearts", 10);
+
+    //check for ace
+    if(playerCard1.rank == 1) {
+      playerNumOfAces++;
+    }
+    if(playerCard2.rank == 1) {
+      playerNumOfAces++;
+    }
+    if(dealerCard1.rank == 1) {
+      dealerNumOfAces++;
+    }
+    if(dealerCard2.rank == 1) {
+      dealerNumOfAces++;
+    }
+
     //updates the number the player/dealer is at
     dealerAt += dealerCard1.value + dealerCard2.value;
     playerAt += playerCard1.value + playerCard2.value;
+
 
     //gives player/dealer cards. Timeout used to give dealing animation. Sound also called
     cardNoise.play();
@@ -70,9 +93,22 @@ function deal() {
 
     setTimeout(()=> {updateNumbersAt();}, 4000); //update what number user is at
 
-    // display players option buttons
-    setTimeout(()=> {document.getElementById('hitbtn').style.visibility = 'visible';
-                     document.getElementById('standbtn').style.visibility = 'visible';}, 5000);
+    //Black jack (21 on first two cards)
+    setTimeout(()=> {
+    if(playerAt+(10*playerNumOfAces) == 21) {
+      document.getElementById('U_AT').innerHTML = "BLACKJACK! You win!";
+      chips += betAmount*4;
+      document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
+      document.getElementById('C_AMOUNT').innerHTML = "Chip amount = " +chips;
+      document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
+      document.getElementById('standbtn').style.visibility = 'hidden'; //removes stand option
+    }else {
+      // display players option buttons
+      document.getElementById('hitbtn').style.visibility = 'visible';
+      document.getElementById('standbtn').style.visibility = 'visible';
+    }}, 4000);
+
+
 
 }
 
@@ -83,6 +119,12 @@ function deal() {
  */
 function hit() {
     var cardNew = deck.select(); //select new card
+
+    //check if ace
+    if(cardNew.rank == 1) {
+      playerNumOfAces++;
+    }
+
     playerAt += cardNew.value;
 
     cardNoise.play();
@@ -115,6 +157,11 @@ function hit() {
  Dealers turn (players turn is over. Player stands meaning they haven't won or lost yet)
  */
 function dealerTurn() {
+    if((playerAt+(10*playerNumOfAces)) <= 21) {
+      playerAt = (playerAt+(10*playerNumOfAces));
+      document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
+    }
+
     var timeoutValue = 1000; //delay value to be used
 
     document.getElementById('hitbtn').style.visibility = 'hidden'; // removes hit option
@@ -129,16 +176,29 @@ function dealerTurn() {
     document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
     document.getElementById('D_CARDS').appendChild(dealerCard2.cardToImage());
 
-    //keep receiving cards until the dealer is at 17.
-    while(dealerAt < 17) {
+    //keep receiving cards until the dealer is at 17. i < 5 is arbitrary. The for loop is for the card delay to work properly
+    for(var i = 0; i < 5; i++) {
+      setTimeout(()=> {if(dealerAt < 17) {
+
             var dealerNewCard = deck.select();
             dealerAt += dealerNewCard.value;
-            setTimeout(()=> {
+
+            //check if ace
+            if(dealerNewCard.rank == 1) {
+              dealerNumOfAces++;
+            }
+            while(dealerAt+(10*dealerNumOfAces) > 21 && dealerNumOfAces != 0) {
+              //playerAt += 10;
+              dealerNumOfAces--;
+            }
+
             cardNoise.play();
             document.getElementById('D_CARDS').appendChild(dealerNewCard.cardToImage());
             document.getElementById('D_AT').innerHTML = "Dealer is at: " +dealerAt +"!";
-            }, timeoutValue);
-            timeoutValue += 1000;
+
+      }}, timeoutValue);
+
+      timeoutValue += 500;
 
     }
 
@@ -267,10 +327,20 @@ function bet(amount) {
 
 
 /*
-updates the number the player is at
+updates the number the player is at. Controls aces which are worth 1 or 11 which ever keeps player under 21
 */
 function updateNumbersAt() {
-    document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
+    while(playerAt+(10*playerNumOfAces) > 21 && playerNumOfAces != 0) {
+      //playerAt += 10;
+      playerNumOfAces--;
+    }
+
+    if(playerNumOfAces > 0 && (playerAt+(10*playerNumOfAces)) <= 21) {
+      document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +" or " +(playerAt+(10*playerNumOfAces))+"!";
+    }else {
+      document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
+    }
+
 }
 
 
