@@ -13,3 +13,10 @@ Slot machine: a coin-operated gaming machine that generates random combinations 
 certain combinations winning varying amounts of money for the player. It has three reels. You can either land on a symbol
 or between it. Only lands on a symbol count for a winning variation.
 
+# To Run
+1. Setup Database for accounts
+- Step 1
+- Step 2
+- Step 3
+2. Other setup Stuff
+3. Open Landing.html in a Browser

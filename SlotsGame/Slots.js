@@ -86,7 +86,7 @@ When user presses spin reels. User has to have a coin in machine to spin. It spi
 The animation of spinning the reels was done by changing the different images really fast.
 */
 function spinReels() {
-  if(coinsPlayed != 0) {
+  if(coinsPlayed != 0  && coins-coinsPlayed>=0) {
     spinSound.play();
 
     //update users coins

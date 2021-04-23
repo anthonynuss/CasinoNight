@@ -7,19 +7,24 @@
     <title>Gambler Landing</title>
     <link rel="stylesheet" href="./landing.css">
 </head>
-<body style="background-color: green;">
+<body>
     <div class="heading">
-        <h1>Welcome to Gambler!</h1>
+        <img src="./WelcomeImages/WelcomeBanner.jfif" width="100%" >
+        
     </div>
 
     <ul class="navbar">
+        <!-- if signed in to an account -->
         <!--Game List-->
         <li><a href="../BlackJackGame/BlackJack.html">BlackJack</a></li>
         <li><a href="../SlotsGame/Slots.html">Slots</a></li>
-        <li><a href="google.com">google</a></li>
+        <li><a href="../LoginSignup/logout.php">Logout</a></li>
+        <!-- else -->
+        <li><a href="../LoginSignup/login.php">Login</a></li>
+        <li><a href="../LoginSignup/registration.php">Sign Up</a></li>
     </ul>
 
-    <!-- this OR-->
+    <!-- Delete this when link issues are resolved -->
     <div class="signup">
         <p class="link"><a href="http://localhost:8000/registration.php">Signup</a></p>
     </div>
