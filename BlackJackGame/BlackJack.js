@@ -65,6 +65,10 @@ function deal() {
     // var playerCard1 = new Card(1, "hearts", 1);
     // var playerCard2 = new Card(10, "hearts", 10);
 
+    //ace example hardcode
+    // var playerCard1 = new Card(1, "hearts", 1);
+    // var playerCard2 = new Card(5, "spades", 5);
+
     //check for ace
     if(playerCard1.rank == 1) {
       playerNumOfAces++;
@@ -157,6 +161,7 @@ function hit() {
  Dealers turn (players turn is over. Player stands meaning they haven't won or lost yet)
  */
 function dealerTurn() {
+    //update the players value in the ace sinerio to the best outcome
     if((playerAt+(10*playerNumOfAces)) <= 21) {
       playerAt = (playerAt+(10*playerNumOfAces));
       document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +"!";
@@ -330,11 +335,12 @@ function bet(amount) {
 updates the number the player is at. Controls aces which are worth 1 or 11 which ever keeps player under 21
 */
 function updateNumbersAt() {
+    //for keeping player below 21 with multiple aces. Keeps player as close to 21 as possible
     while(playerAt+(10*playerNumOfAces) > 21 && playerNumOfAces != 0) {
-      //playerAt += 10;
       playerNumOfAces--;
     }
 
+    //displays the ace sinerio or regular.
     if(playerNumOfAces > 0 && (playerAt+(10*playerNumOfAces)) <= 21) {
       document.getElementById('U_AT').innerHTML = "You are at: " +playerAt +" or " +(playerAt+(10*playerNumOfAces))+"!";
     }else {
@@ -361,6 +367,7 @@ function result() {
         chips += betAmount*2;
     }else if(playerAt == dealerAt) {
         document.getElementById('U_AT').innerHTML = "You push!"; //push means tie in blackjack
+        chips = betAmount;
     }
 
     document.getElementById('redealbtn').style.visibility = 'visible'; //re-deal option
